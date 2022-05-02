@@ -17,10 +17,28 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18);
+
   @override
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
-    return Text(wordPair.asPascalCase);
+    return ListView.builder(itemBuilder: itemBuilderFn);
+  }
+
+  Widget itemBuilderFn(BuildContext context, int index) {
+    if (index.isOdd) {
+      return const Divider(); /*2*/
+    }
+
+    index = index ~/ 2; /*3*/
+    if (index >= _suggestions.length) {
+      _suggestions.addAll(generateWordPairs().take(10)); /*4*/
+    }
+
+    var listTitle = ListTile(
+        title: Text(_suggestions[index].asPascalCase, style: _biggerFont));
+
+    return listTitle;
   }
 }
 
