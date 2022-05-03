@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class RandomWords extends StatefulWidget {
@@ -22,10 +22,13 @@ class _RandomWordsState extends State<RandomWords> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: itemBuilderFn);
+    return ListView.builder(
+      itemBuilder: listItemFn,
+      padding: const EdgeInsets.all(16.0),
+    );
   }
 
-  Widget itemBuilderFn(BuildContext context, int index) {
+  Widget listItemFn(BuildContext context, int index) {
     if (index.isOdd) {
       return const Divider(); /*2*/
     }
@@ -43,23 +46,18 @@ class _RandomWordsState extends State<RandomWords> {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
-  Widget homeWidget() {
-    var wordPair = WordPair.random();
-    String word = wordPair.asPascalCase;
-
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: const Center(
-          child: RandomWords(),
-        ));
-  }
+  final Widget homeWidget = Scaffold(
+      appBar: AppBar(
+        title: const Text('Startup Name Generator'),
+      ),
+      body: const Center(
+        child: RandomWords(),
+      ));
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Welcome to Flutter', home: homeWidget());
+    return MaterialApp(title: 'Startup Name Generator', home: homeWidget);
   }
 }
