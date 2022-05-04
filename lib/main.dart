@@ -23,13 +23,54 @@ class _RandomWordsState extends State<RandomWords> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: listItemFn,
-      padding: const EdgeInsets.all(16.0),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Startup Name Generator'),
+          actions: [
+            IconButton(
+              onPressed: _pushedSaved,
+              icon: const Icon(Icons.list),
+              tooltip: "Saved Suggestion",
+            )
+          ],
+          centerTitle: false,
+        ),
+        body: ListView.builder(
+          itemBuilder: _listItemFn,
+          padding: const EdgeInsets.all(16.0),
+        ));
   }
 
-  Widget listItemFn(BuildContext context, int index) {
+  void _pushedSaved() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      final tiles = _savedWords.map(
+        (pair) {
+          return ListTile(
+            title: Text(
+              pair,
+              style: _biggerFont,
+            ),
+          );
+        },
+      );
+
+      final divided = tiles.isNotEmpty
+          ? ListTile.divideTiles(
+              context: context,
+              tiles: tiles,
+            ).toList()
+          : <Widget>[];
+
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Saved Suggestions'),
+        ),
+        body: ListView(children: divided),
+      );
+    }));
+  }
+
+  Widget _listItemFn(BuildContext context, int index) {
     if (index.isOdd) {
       return const Divider(); /*2*/
     }
@@ -62,18 +103,19 @@ class _RandomWordsState extends State<RandomWords> {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  final Widget homeWidget = Scaffold(
-      appBar: AppBar(
-        title: const Text('Startup Name Generator'),
-      ),
-      body: const Center(
-        child: RandomWords(),
-      ));
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Startup Name Generator', home: homeWidget);
+    return MaterialApp(
+        title: 'Startup Name Generator',
+        home: const RandomWords(),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+        ));
   }
 }
