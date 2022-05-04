@@ -43,11 +43,21 @@ class _RandomWordsState extends State<RandomWords> {
     final alreadySaved = _savedWords.contains(wordToDisplay);
 
     var listTitle = ListTile(
-        title: Text(wordToDisplay, style: _biggerFont),
-        trailing: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
-            color: alreadySaved ? Colors.red : null,
-            semanticLabel: alreadySaved ? "Remove from saved" : "Save"));
+      title: Text(wordToDisplay, style: _biggerFont),
+      trailing: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
+          color: alreadySaved ? Colors.red : null,
+          semanticLabel: alreadySaved ? "Remove from saved" : "Save"),
+      onTap: () => handleOnListTileTap(alreadySaved, wordToDisplay),
+    );
     return listTitle;
+  }
+
+  void handleOnListTileTap(bool alreadySaved, String wordToDisplay) {
+    setState(() {
+      var _ = alreadySaved
+          ? _savedWords.remove(wordToDisplay)
+          : _savedWords.add(wordToDisplay);
+    });
   }
 }
 
